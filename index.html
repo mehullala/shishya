@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="shishya_ai">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>shishya_ai</title>
+  <link rel="manifest" href="manifest.json">
+
+  <!-- flutter_tex web assets (dynamic loader) -->
+  <link id="flutter_tex_css" rel="stylesheet" href="">
+  <script>
+    (function(){
+      const candidates = [
+        "assets/packages/flutter_tex/css/katex.min.css",
+        "packages/flutter_tex/css/katex.min.css"
+      ];
+      const jsCandidates = [
+        "assets/packages/flutter_tex/js/katex.min.js",
+        "packages/flutter_tex/js/katex.min.js"
+      ];
+      const autoCandidates = [
+        "assets/packages/flutter_tex/js/auto-render.min.js",
+        "packages/flutter_tex/js/auto-render.min.js"
+      ];
+      const texCandidates = [
+        "assets/packages/flutter_tex/js/tex_render.js",
+        "packages/flutter_tex/js/tex_render.js"
+      ];
+
+      function tryLoadList(list, onLoaded) {
+        let i = 0;
+        function tryNext() {
+          if (i >= list.length) {
+            console.warn('flutter_tex asset not found in any candidate path:', list);
+            onLoaded(false);
+            return;
+          }
+          const url = list[i++];
+          fetch(url, { method: 'HEAD' }).then(r => {
+            if (r.ok) { onLoaded(url); } else { tryNext(); }
+          }).catch(() => tryNext());
+        }
+        tryNext();
+      }
+
+      // load CSS
+      tryLoadList(candidates, function(url) {
+        if (!url) return;
+        document.getElementById('flutter_tex_css').href = url;
+      });
+
+      // load JS files in order
+      function loadScript(src, cb) {
+        const s = document.createElement('script');
+        s.src = src;
+        s.async = false;
+        s.onload = () => cb(true);
+        s.onerror = () => cb(false);
+        document.head.appendChild(s);
+      }
+
+      tryLoadList(jsCandidates, function(katexUrl){
+        if (!katexUrl) return;
+        loadScript(katexUrl, function(ok){
+          if (!ok) return;
+          tryLoadList(autoCandidates, function(autoUrl){
+            if (!autoUrl) return;
+            loadScript(autoUrl, function(ok2){
+              if (!ok2) return;
+              tryLoadList(texCandidates, function(texUrl){
+                if (!texUrl) return;
+                loadScript(texUrl, function(ok3){
+                  if (!ok3) return;
+                  // call init if available after load
+                  window.addEventListener('load', function () {
+                    if (typeof initTeXViewWeb === 'function') {
+                      initTeXViewWeb();
+                    } else {
+                      console.warn('initTeXViewWeb not found — check flutter_tex web assets paths.');
+                    }
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    })();
+  </script>
+
+</head>
+<body>
+  <script src="flutter_bootstrap.js" async></script>
+  <!-- init handled by dynamic loader in the head -->
+</body>
+</html>
