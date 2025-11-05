@@ -25,7 +25,11 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="shishya_ai">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
+  <script>
+  function OnTeXViewRenderedCallback() {
+    console.log("TeX rendering fallback registered");
+  }
+</script>
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
@@ -45,5 +49,6 @@
   <!-- init handled by dynamic loader in the head -->
 </body>
 </html>
+
 
 
