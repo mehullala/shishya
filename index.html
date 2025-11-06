@@ -50,8 +50,19 @@ window.OnTeXViewRenderedCallback = function(){ return true; };
 <body>
   <script src="flutter_bootstrap.js" async></script>
   <!-- init handled by dynamic loader in the head -->
+  <script>
+    window.addEventListener('load', function () {
+   if (typeof initTeXViewWeb === 'function') {
+        initTeXViewWeb();
+      } else {
+        console.warn('initTeXViewWeb not found — check flutter_tex web assets paths.');
+      }
+    });
+</script>
+
 </body>
 </html>
+
 
 
 
